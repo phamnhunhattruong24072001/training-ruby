@@ -1,0 +1,80 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/health":
+    get:
+      summary: Health check
+      tags:
+      - Health
+      responses:
+        '200':
+          description: health check
+  "/users":
+    get:
+      summary: List user
+      tags:
+      - Users
+      responses:
+        '200':
+          description: users found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                required:
+                - id
+                - name
+    post:
+      summary: Create a user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: user created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                required:
+                - id
+                - name
+                - email
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - name
+              - email
+              - password
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

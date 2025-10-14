@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+# Wait for PostgreSQL to be ready
+echo "Waiting for PostgreSQL to start..."
+while ! pg_isready -h db -p 5432 -U postgres > /dev/null 2>&1; do
+  sleep 1
+done
+
+# Create database if it doesn't exist
+echo "Creating database..."
+bundle exec rails db:create
+
+# Run migrations
+echo "Running migrations..."
+bundle exec rails db:migrate
+
+# Seed data if needed
+# bundle exec rails db:seed
+
+echo "Database setup complete!"
