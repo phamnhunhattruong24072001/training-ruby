@@ -10,27 +10,56 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_08_085852) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_22_032318) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "movies", force: :cascade do |t|
-    t.string "title"
+  create_table "blogs", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "slug"
     t.text "description"
-    t.date "release_date"
-    t.integer "duration"
+    t.text "short_description"
+    t.string "thumbnail"
+    t.text "gallery"
+    t.bigint "user_id", null: false
+    t.bigint "category_id", null: false
+    t.boolean "published", default: false
+    t.datetime "published_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_blogs_on_category_id"
+    t.index ["slug"], name: "index_blogs_on_slug", unique: true
+    t.index ["user_id"], name: "index_blogs_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.string "slug"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "password", default: "", null: false
-    t.string "username", default: "", null: false
-    t.string "name"
-    t.integer "phone"
-    t.string "role", default: "0"
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.string "username", default: "", null: false
+    t.string "name"
+    t.string "phone"
+    t.datetime "remember_created_at"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 end

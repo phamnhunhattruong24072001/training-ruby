@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require "devise"
 
 Bundler.require(*Rails.groups)
 
@@ -9,6 +10,7 @@ module TrainingRuby
     config.load_defaults 8.0
     config.api_only = true
     config.active_job.queue_adapter = :async
+    config.autoload_paths << Rails.root.join("lib")
 
     config.middleware.use Rack::Cors do
       allow do

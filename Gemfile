@@ -3,7 +3,7 @@ source "https://rubygems.org"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2", ">= 8.0.2.1"
 
-gem 'pg', '~> 1.5'
+gem "pg", "~> 1.5"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use sqlite3 as the database for Active Record
@@ -19,7 +19,11 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
-gem 'rack-cors'
+gem "rack-cors"
+
+gem "devise"
+
+gem "jwt"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -54,11 +58,11 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'rspec-rails'
-  gem 'rswag'
-  gem 'rswag-specs'
-  gem 'rswag-ui'
-  gem 'rswag-api'
+  gem "rspec-rails"
+  gem "rswag"
+  gem "rswag-specs"
+  gem "rswag-ui"
+  gem "rswag-api"
 end
 
 group :development do
