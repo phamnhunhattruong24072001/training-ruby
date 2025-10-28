@@ -1,0 +1,27 @@
+<%= form_with model: team, url: @team.persisted? ? team_update_path(@team) : team_create_path, local: true do |f| %>
+<div class="card-body">
+  <% if team.errors.any? %>
+    <div class="alert alert-danger">
+      <h6><%= pluralize(team.errors.count, "lỗi") %>:</h6>
+      <ul>
+        <% team.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, "Tên team" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, "Mô tả" %>
+    <%= f.text_area :description, rows: 3, class: "form-control" %>
+  </div>
+
+  <%= f.submit class: "btn btn-success" %>
+  <%= link_to "Quay lại", team_list_path, class: "btn btn-secondary" %>
+</div>
+<% end %>

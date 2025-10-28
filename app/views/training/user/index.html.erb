@@ -1,0 +1,91 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            <h1>List user</h1>
+            </div>
+            <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active">List user</li>
+            </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <% flash.each do |type, message| %>
+                    <% alert_class = type == "notice" ? "success" : "danger" %>
+                    <div class="alert alert-<%= alert_class %>">
+                        <%= message %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <%= link_to "Thêm mới", user_add_path, class: "btn btn-primary btn-sm" %>
+                <%= form_with url: user_list_path, method: :get, local: true, html: { class: "card-tools" } do %>
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <%= text_field_tag :keyword, params[:keyword], class: "form-control float-right", placeholder: "Search" %>
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                <% end %>
+
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Email</th>
+                      <th>Username</th>
+                      <th>Display name</th>
+                      <th>Team</th>
+                      <th>Position</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @users.each_with_index do |user, index| %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.username %></td>
+                            <td><%= user.display_name %></td>
+                            <td><%= user.team&.name || "-" %></td>
+                            <td><%= user.position&.name || "-" %></td>
+                            <td>
+                              <%= link_to "✏️ Sửa", user_edit_path(user), class: "btn btn-warning btn-sm" %>
+                              <%= link_to "🗑️ Xoá", user_destroy_path(user), onclick: "return confirm('Bạn có chắc muốn xoá user này không?')", class: "btn btn-danger btn-sm" %>
+                            </td>
+                        </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+    </div>
+</section>

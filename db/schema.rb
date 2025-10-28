@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_22_032318) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_28_035855) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,56 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_22_032318) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_positions_on_name", unique: true
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.string "code", default: "", null: false
+    t.text "description"
+    t.integer "status", default: 3, null: false, comment: "0: Super Admin, 1: Admin, 2: Manager, 3: User"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_roles_on_code", unique: true
+    t.index ["name"], name: "index_roles_on_name", unique: true
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_teams_on_name", unique: true
+  end
+
+  create_table "user_teams", force: :cascade do |t|
+    t.string "username", default: "", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "fullname"
+    t.string "display_name"
+    t.string "phone"
+    t.date "birth_day"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.bigint "role_id", null: false
+    t.bigint "position_id"
+    t.bigint "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_user_teams_on_email", unique: true
+    t.index ["position_id"], name: "index_user_teams_on_position_id"
+    t.index ["role_id"], name: "index_user_teams_on_role_id"
+    t.index ["team_id"], name: "index_user_teams_on_team_id"
+    t.index ["username"], name: "index_user_teams_on_username", unique: true
   end
 
   create_table "users", force: :cascade do |t|
