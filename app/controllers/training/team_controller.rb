@@ -2,6 +2,7 @@ class Training::TeamController < AppController
   before_action :authenticate_user_team!
   layout "team"
   before_action :set_team, only: [ :edit, :update, :destroy ]
+  before_action :authorize_team_access, except: [ :index ]
 
   def index
     if params[:keyword].present?
@@ -52,5 +53,12 @@ class Training::TeamController < AppController
 
   def team_params
     params.require(:team).permit(:name, :description)
+  end
+
+  def authorize_team_access
+    unless @current_user_team.super_admin? || @current_user_team.admin?
+      flash[:alert] = "You are not authorized to manage teams."
+      redirect_to home_path
+    end
   end
 end

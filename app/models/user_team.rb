@@ -10,4 +10,21 @@ class UserTeam < ApplicationRecord
 
   validates :username, presence: true, uniqueness: true
   validates :email, presence: true, uniqueness: true
+  validates :encrypted_password, presence: true
+
+  def super_admin?
+    role.code == "super_admin"
+  end
+
+  def admin?
+    role.code == "admin"
+  end
+
+  def manager?
+    role.code == "manager"
+  end
+
+  def user?
+    role.code == "user"
+  end
 end

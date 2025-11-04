@@ -65,6 +65,7 @@ group :development, :test do
   gem "rswag-specs"
   gem "rswag-ui"
   gem "rswag-api"
+  gem "byebug", platforms: [ :mri, :mingw, :x64_mingw ]
 end
 
 group :development do

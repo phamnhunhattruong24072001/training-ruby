@@ -1,5 +1,4 @@
 <%= form_with model: @user, url: @user.persisted? ? user_update_path(@user) : user_create_path, local: true do |f| %>
-
 <div class="card-body">
   <% if user.errors.any? %>
     <div class="alert alert-danger">
