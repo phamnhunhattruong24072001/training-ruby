@@ -90,14 +90,29 @@ class Training::AuthController < AppController
   end
 
   def profile
+    @form = UpdateProfileForm.new
     @user = UserTeam.find_by(id: session[:user_team_id])
     render layout: "team"
   end
 
+  def update_profile
+    @form = UpdateProfileForm.new(profile_params)
+    @user = UserTeam.find_by(id: session[:user_team_id])
+    if @form.valid?
+      if @user.update(profile_params)
+        redirect_to profile_path, notice: "Cập nhật dữ liệu thành công!"
+      else
+        redirect_to profile_path, alert: "Cập nhật dữ liệu thất bại!"
+      end
+    else
+      render :profile, layout: "team", status: :unprocessable_entity
+    end
+  end
+
   private
 
-  def change_password_params
-    params.require(:change_password).permit(:current_password, :new_password, :confirm_password)
+  def profile_params
+    params.require(:user_team).permit(:fullname, :display_name, :phone, :birth_day)
   end
 
   def valid_password?(user, password)

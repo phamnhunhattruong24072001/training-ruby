@@ -16,20 +16,20 @@ Rails.application.routes.draw do
   get    "reset-password/:token",     to: "training/auth#reset_password",               as: :reset_password
   post   "reset-password/:token",     to: "training/auth#handle_reset_password",        as: :handle_reset_password
   get    "profile",                   to: "training/auth#profile",                      as: :profile
-  post   "profile",                   to: "training/auth#update_profile",               as: :update_profile
+  patch  "profile",                   to: "training/auth#update_profile",               as: :update_profile
 
-  get    "team/add",                  to: "training/team#add",                          as: :team_add
   get    "team/list",                 to: "training/team#index",                        as: :team_list
+  get    "team/add",                  to: "training/team#add",                          as: :team_add
   post   "team/add",                  to: "training/team#create",                       as: :team_create
   get    "team/edit/:id",             to: "training/team#edit",                         as: :team_edit
-  match  "team/update/:id",           to: "training/team#update",                       via: [ :patch, :post ], as: :team_update
+  match  "team/edit/:id",             to: "training/team#update",                       via: [ :patch, :post ], as: :team_update
   get    "team/destroy/:id",          to: "training/team#destroy",                      as: :team_destroy
 
-  get    "user/add",                  to: "training/user#add",                          as: :user_add
   get    "user/list",                 to: "training/user#index",                        as: :user_list
+  get    "user/add",                  to: "training/user#add",                          as: :user_add
   post   "user/add",                  to: "training/user#create",                       as: :user_create
   get    "user/edit/:id",             to: "training/user#edit",                         as: :user_edit
-  match  "user/update/:id",           to: "training/user#update",                       via: [ :patch, :post ], as: :user_update
+  match  "user/edit/:id",             to: "training/user#update",                       via: [ :patch, :post ], as: :user_update
   get    "user/destroy/:id",          to: "training/user#destroy",                      as: :user_destroy
 
   # API routes

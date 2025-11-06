@@ -13,28 +13,40 @@ class Training::TeamController < AppController
   end
 
   def add
+    @form = TeamForm.new
     @team = Team.new
   end
 
   def create
+    @form = TeamForm.new(team_params)
     @team = Team.new(team_params)
-    if @team.save
-      redirect_to team_list_path, notice: "Tạo team thành công!"
+    if @form.valid?
+      if @team.save
+        redirect_to team_list_path, notice: "Tạo team thành công!"
+      else
+        flash[:alert] = "Tạo team thất bại!"
+        render :add, status: :unprocessable_entity
+      end
     else
-      flash[:alert] = "Tạo team thất bại!"
       render :add, status: :unprocessable_entity
     end
   end
 
   def edit
+    @form = TeamForm.new
   end
 
   def update
-    if @team.update(team_params)
-      flash[:notice] = "Cập nhật thành công!"
-      redirect_to team_list_path
+    @form = TeamForm.new(team_params.merge(id: @team.id))
+    if @form.valid?
+      if @team.update(team_params)
+        flash[:notice] = "Cập nhật thành công!"
+        redirect_to team_list_path
+      else
+        flash[:alert] = "Cập nhật thất bại!"
+        render :edit, status: :unprocessable_entity
+      end
     else
-      flash[:alert] = "Cập nhật thất bại!"
       render :edit, status: :unprocessable_entity
     end
   end

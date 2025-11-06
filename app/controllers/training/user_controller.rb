@@ -29,34 +29,46 @@ class Training::UserController < AppController
   end
 
   def add
+    @form = UserForm.new
     @user = UserTeam.new
     load_form_data
   end
 
   def create
+    @form = UserForm.new(user_params)
     @user = UserTeam.new(user_params)
-    @user.password = "12345678"
-    @user.password_confirmation = "12345678"
-    if @user.save
-      redirect_to user_list_path, notice: "Thêm mới thành công!"
+    load_form_data
+    if @form.valid?
+      @user.password = "12345678"
+      @user.password_confirmation = "12345678"
+      if @user.save
+        redirect_to user_list_path, notice: "Thêm mới thành công!"
+      else
+        flash[:alert] = "Thêm mới thất bại!"
+        render :add, status: :unprocessable_entity
+      end
     else
-      load_form_data
-      flash[:alert] = "Thêm mới thất bại!"
       render :add, status: :unprocessable_entity
     end
   end
 
   def edit
+   @form = UserForm.new
    load_form_data
   end
 
   def update
+    @form = UserForm.new(user_params.merge(id: @user.id))
     load_form_data
-    if @user.update(user_params)
-      flash[:notice] = "Cập nhật thành công!"
-      redirect_to user_list_path
+    if @form.valid?
+      if @user.update(user_params)
+        flash[:notice] = "Cập nhật thành công!"
+        redirect_to user_list_path
+      else
+        flash[:alert] = "Cập nhật thất bại!"
+        render :edit, status: :unprocessable_entity
+      end
     else
-      flash[:alert] = "Cập nhật thất bại!"
       render :edit, status: :unprocessable_entity
     end
   end
