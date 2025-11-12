@@ -2,7 +2,7 @@ class UserForm
   include ActiveModel::Model
   include ActiveModel::Attributes
 
-  attr_accessor :id, :email, :username, :fullname, :display_name, :phone, :birth_day, :team_id, :position_id, :role_id
+  attr_accessor :id, :email, :username, :fullname, :display_name, :phone, :birth_day, :team_id, :position_id, :role_id, :avatar
 
   validates :email, presence: { message: "Không được để trống" }
   validates :username, presence: { message: "Không được để trống" }

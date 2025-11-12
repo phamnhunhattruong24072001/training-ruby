@@ -65,7 +65,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% @users.each_with_index do |user, index| %>
+                    <% @users_display.each_with_index do |user, index| %>
                         <tr>
                             <td><%= index + 1 %></td>
                             <td><%= user.email %></td>
@@ -83,6 +83,10 @@
                 </table>
               </div>
               <!-- /.card-body -->
+
+              <div class="card-footer clearfix">
+                <%= paginate @users_display %>
+              </div>
             </div>
             <!-- /.card -->
           </div>

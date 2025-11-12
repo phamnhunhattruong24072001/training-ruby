@@ -4,6 +4,7 @@ class Training::UserController < AppController
   before_action :set_user, only: [ :edit, :update, :destroy ]
   before_action :authorize_user_access, only: [ :add, :create, :edit, :update, :destroy ]
   require "bcrypt"
+  include UploadHelper
 
   def index
     role = current_user_team.role.code
@@ -26,6 +27,7 @@ class Training::UserController < AppController
     end
 
     @users = @users.order(created_at: :desc)
+    @users_display = @users.page(params[:page]).per(20)
   end
 
   def add
@@ -41,6 +43,10 @@ class Training::UserController < AppController
     if @form.valid?
       @user.password = "12345678"
       @user.password_confirmation = "12345678"
+      if user_params[:avatar].present?
+        @user.avatar = save_uploaded_image(user_params[:avatar], folder: "uploads/users")
+      end
+
       if @user.save
         redirect_to user_list_path, notice: "Thêm mới thành công!"
       else
@@ -60,8 +66,18 @@ class Training::UserController < AppController
   def update
     @form = UserForm.new(user_params.merge(id: @user.id))
     load_form_data
+
     if @form.valid?
-      if @user.update(user_params)
+      updated_params = user_params.dup
+
+      if updated_params[:avatar].present?
+        avatar_path = save_uploaded_image(updated_params[:avatar], folder: "uploads/users")
+        updated_params[:avatar] = avatar_path
+      else
+        updated_params.delete(:avatar)
+      end
+
+      if @user.update(updated_params)
         flash[:notice] = "Cập nhật thành công!"
         redirect_to user_list_path
       else
@@ -113,7 +129,7 @@ class Training::UserController < AppController
     params.require(:user_team).permit(
       :username, :email,
       :fullname, :display_name, :phone,
-      :birth_day, :role_id, :position_id, :team_id
+      :birth_day, :role_id, :position_id, :team_id, :avatar
     )
   end
 
